@@ -16,15 +16,18 @@ struct Network: Codable, Identifiable {
 }
 
 class Api {
-    func getNetworks(completion: @escaping ([Network]) -> ()) {
-        guard let url = URL(string: "http://192.168.26.1:5000/api/available_networks") else { return }
-        URLSession.shared.dataTask(with: url) { data, _, _ in
-            
-            let networks = try! JSONDecoder().decode([Network].self, from: data!)
-            DispatchQueue.main.async {
-                completion(networks)
+    func getNetworks(completion: @escaping (([Network]) -> ())) {
+        guard let url = URL(string:
+                                "http://192.168.26.1:5000/api/available_networks") else { return }
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            if data != nil {
+                let networks = try! JSONDecoder().decode([Network].self, from: data!)
+                DispatchQueue.main.async {
+                    completion(networks)
+                }
             }
         }
         .resume()
     }
+    
 }

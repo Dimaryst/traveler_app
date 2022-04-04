@@ -37,7 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		88C3D78727F3B148000928A1 /* rpi_traveler_app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = rpi_traveler_app.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		88C3D78727F3B148000928A1 /* RPi Traveler.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RPi Traveler.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		88C3D78A27F3B148000928A1 /* rpi_traveler_appApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = rpi_traveler_appApp.swift; sourceTree = "<group>"; };
 		88C3D78C27F3B148000928A1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		88C3D78E27F3B14B000928A1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -90,7 +90,7 @@
 		88C3D78827F3B148000928A1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				88C3D78727F3B148000928A1 /* rpi_traveler_app.app */,
+				88C3D78727F3B148000928A1 /* RPi Traveler.app */,
 				88C3D79C27F3B14B000928A1 /* rpi_traveler_appTests.xctest */,
 				88C3D7A627F3B14C000928A1 /* rpi_traveler_appUITests.xctest */,
 			);
@@ -153,7 +153,7 @@
 			);
 			name = rpi_traveler_app;
 			productName = rpi_traveler_app;
-			productReference = 88C3D78727F3B148000928A1 /* rpi_traveler_app.app */;
+			productReference = 88C3D78727F3B148000928A1 /* RPi Traveler.app */;
 			productType = "com.apple.product-type.application";
 		};
 		88C3D79B27F3B14B000928A1 /* rpi_traveler_appTests */ = {
@@ -435,6 +435,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -444,7 +445,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "dimaryst.rpi-traveler-app";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "RPi Traveler";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -465,6 +466,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -474,7 +476,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "dimaryst.rpi-traveler-app";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "RPi Traveler";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
