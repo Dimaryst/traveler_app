@@ -13,7 +13,7 @@ struct NetworksView: View {
     @State public var scanButtonDisabled = false
     
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack() {
                         List {
                             Button(action: getNetworks) {
                                 Label("Rescan available networks", systemImage: "arrow.clockwise")
@@ -27,14 +27,18 @@ struct NetworksView: View {
                                         Text(nw.ssid)
                                     }
                                         }
+                                HStack{
+                                    Label("", systemImage: "eye.slash")
+                                    Text("Other...")
+                                }
                                     }
                                 }
                 }
     }
     private func getNetworks() {
-            networks = []
             self.scanButtonDisabled = true
             Api().getNetworks { (networks) in
+                self.networks = []
                 self.networks = networks
                 self.scanButtonDisabled = false
             }
@@ -48,9 +52,33 @@ struct NetworksView: View {
 }
 
 struct HotspotView: View {
+    @State var ssid_ap: String = "Not available"
+    @State var password_ap: String = ""
+    
     var body: some View {
-        Text("Empty")
+        
+        List {
+                Section(header: Text("Traveler Hotspot")){
+                HStack{
+                    Label("SSID:", systemImage: "wifi")
+                    Text(self.ssid_ap)
+                }
+                HStack{
+                    Label("Password:", systemImage: "key")
+                    Text(self.password_ap)
+                }
+                    Button(action: getHotspot) {
+                        Label("Update", systemImage: "arrow.clockwise")
+                    }
+                }
+        }
     }
+    private func getHotspot() {
+            Api().getHotspot { (hotspot) in
+                self.ssid_ap = hotspot.ssid
+                self.password_ap = hotspot.password
+            }
+        }
 }
 
 struct MainView: View {
