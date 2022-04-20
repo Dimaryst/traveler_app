@@ -10,41 +10,71 @@ import CoreData
 
 struct NetworksView: View {
     @State var networks: [Network] = []
-    @State public var scanButtonDisabled = false
-    
+    @State var configured_network: Network
     var body: some View {
         VStack() {
                         List {
-                            Button(action: getNetworks) {
-                                Label("Rescan available networks", systemImage: "arrow.clockwise")
+                            Section(header: Text("Configured Network"), footer: Text("Current configured network on Pi Traveler.")){
+                                HStack (alignment: .lastTextBaseline) {
+                                    Text("SSID")
+                                    Text(configured_network.ssid)
+                            }.swipeActions {
+                                Button("Remove") {
+                                    //
+                                }
+                                .tint(.red)
                             }
-                            .disabled(scanButtonDisabled)
+                            }
                             Section(header: Text("Available Networks")){
                                 ForEach(networks, id: \.id) {
                                     nw in
                                     HStack{
-                                        Label("", systemImage: "\(encryptionTypeToImage(encryptionType: nw.encryption))")
-                                        Text(nw.ssid)
+                                        Label(nw.ssid, systemImage: "\(encryptionTypeToImage(encryptionType: nw.encryption))")
                                     }
                                         }
                                 HStack{
-                                    Label("", systemImage: "eye.slash")
-                                    Text("Other...")
+                                    Label("Other...", systemImage: "eye.slash")
                                 }
                                     }
                                 }
+                        .listStyle(.grouped)
+                        .refreshable {
+                            await getConfiguredNetwork()
+                            await getNetworks()
+                        }
                 }
     }
-    private func getNetworks() {
-            self.scanButtonDisabled = true
-            Api().getNetworks { (networks) in
-                self.networks = []
-                self.networks = networks
-                self.scanButtonDisabled = false
-            }
-            
+    private func disconnectCurrentNetwork() async {
+        do {
+            try await URLSession.shared.data(from: URL(string: "http://192.168.26.1:5000/wifi/reset_configuration")!)
+        } catch {
+            // pass
         }
-        private func encryptionTypeToImage(encryptionType: String) -> String {
+        
+    }
+    private func getNetworks() async {
+        do {
+            let url = URL(string: "http://192.168.26.1:5000/api/available_networks")!
+            let (data, _) = try await URLSession.shared.data(from: url)
+            networks = try JSONDecoder().decode([Network].self, from: data)
+        } catch {
+            self.networks = []
+        }
+        // print(networks)
+        }
+    
+    private func getConfiguredNetwork() async {
+        do {
+            let url = URL(string: "http://192.168.26.1:5000/api/configured_network")!
+            let (data, _) = try await URLSession.shared.data(from: url)
+            configured_network = try JSONDecoder().decode(Network.self, from: data)
+        } catch {
+            // pass
+        }
+        // print(configured_network.ssid)
+        }
+
+    private func encryptionTypeToImage(encryptionType: String) -> String {
             var img = "lock.open"
             if encryptionType != "off" {img = "lock"}
             return img
@@ -52,44 +82,48 @@ struct NetworksView: View {
 }
 
 struct HotspotView: View {
-    @State var ssid_ap: String = "Not available"
-    @State var password_ap: String = ""
+    @State private var isSecured: Bool = true
+    @State var hotspot: Hotspot
     
     var body: some View {
         
         List {
-                Section(header: Text("Traveler Hotspot")){
-                HStack{
-                    Label("SSID:", systemImage: "wifi")
-                    Text(self.ssid_ap)
+                Section(header: Text("Hotspot"), footer: Text("Current Pi Traveler WiFi SSID and Password. You must be connected to the network to receive this data.")){
+                    HStack (alignment: .lastTextBaseline) {
+                    Text("SSID")
+                    Text(hotspot.ssid)
                 }
-                HStack{
-                    Label("Password:", systemImage: "key")
-                    Text(self.password_ap)
+                    HStack (alignment: .lastTextBaseline) {
+                    Text("Password")
+                    Text(hotspot.password)
                 }
-                    Button(action: getHotspot) {
-                        Label("Update", systemImage: "arrow.clockwise")
-                    }
                 }
         }
+        .listStyle(.grouped)
+        .refreshable {
+            await getHotspot()
+        }
     }
-    private func getHotspot() {
-            Api().getHotspot { (hotspot) in
-                self.ssid_ap = hotspot.ssid
-                self.password_ap = hotspot.password
-            }
+    private func getHotspot() async {
+        do {
+            let url = URL(string: "http://192.168.26.1:5000/api/self_hotspot")!
+            let (data, _) = try await URLSession.shared.data(from: url)
+            hotspot = try JSONDecoder().decode(Hotspot.self, from: data)
+        } catch {
+            // pass
+        }
         }
 }
 
 struct MainView: View {
     var body: some View {
         TabView {
-            HotspotView()
+            HotspotView(hotspot: Hotspot(ssid: "", password: ""))
                 .tabItem {
                     Label("Hotspot", systemImage: "personalhotspot")
                 }
 
-            NetworksView()
+            NetworksView(configured_network: Network(ssid: "", mac: "", signal_quality: 0, encryption: "off"))
                 .tabItem {
                     Label("Networks", systemImage: "wifi")
                 }
